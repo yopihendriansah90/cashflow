@@ -1,0 +1,98 @@
+<?php
+
+return [
+    '/catatan/wallets' => ['title' => 'Dompet', 'description' => 'Kelola dompet dan lihat saldo terkini.'],
+    '/catatan/categories' => ['title' => 'Kategori', 'description' => 'Kelola kategori pemasukan dan pengeluaran.'],
+    '/catatan/transactions' => ['title' => 'Transaksi', 'description' => 'Catat pemasukan, pengeluaran, dan transfer.'],
+    '/catatan/audit' => ['title' => 'Audit transaksi', 'description' => 'Riwayat perubahan transaksi rumah tangga.'],
+    '/laporan' => ['title' => 'Laporan', 'description' => 'Lihat dan unduh laporan bulanan rumah tangga.'],
+    '/identitas' => ['title' => 'Pengaturan identitas', 'description' => 'Kelola nama, logo, dan favicon aplikasi.'],
+    '/' => [
+        'title' => 'Beranda | Cashflow Rumah Tangga Muslim',
+        'description' => 'Beranda untuk Cashflow Rumah Tangga Muslim.',
+    ],
+    '/signin' => [
+        'title' => 'Masuk | Cashflow Rumah Tangga Muslim',
+        'description' => 'Masuk untuk Cashflow Rumah Tangga Muslim.',
+    ],
+    '/signup' => [
+        'title' => 'Daftar akun | Cashflow Rumah Tangga Muslim',
+        'description' => 'Daftar akun untuk Cashflow Rumah Tangga Muslim.',
+    ],
+    '/lupa-kata-sandi' => [
+        'title' => 'Lupa kata sandi | Cashflow Rumah Tangga Muslim',
+        'description' => 'Lupa kata sandi untuk Cashflow Rumah Tangga Muslim.',
+    ],
+    '/reset-kata-sandi' => [
+        'title' => 'Atur ulang kata sandi | Cashflow Rumah Tangga Muslim',
+        'description' => 'Atur ulang kata sandi untuk Cashflow Rumah Tangga Muslim.',
+    ],
+    '/mulai' => [
+        'title' => 'Mulai rumah tangga | Cashflow Rumah Tangga Muslim',
+        'description' => 'Mulai rumah tangga untuk Cashflow Rumah Tangga Muslim.',
+    ],
+    '/rumah-tangga' => [
+        'title' => 'Pengaturan rumah tangga | Cashflow Rumah Tangga Muslim',
+        'description' => 'Pengaturan rumah tangga untuk Cashflow Rumah Tangga Muslim.',
+    ],
+    '/alerts' => [
+        'title' => 'Laravel Alerts | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Alerts page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/avatars' => [
+        'title' => 'Laravel Avatars | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Avatars page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/badge' => [
+        'title' => 'Laravel Badge | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Badge page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/bar-chart' => [
+        'title' => 'Laravel Bar Chart | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Bar Chart page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/basic-tables' => [
+        'title' => 'Laravel Basic Data Table | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Basic Data Table page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/blank' => [
+        'title' => 'Blank Page | TailAdmin - Laravel Admin Dashboard Template',
+        'description' => 'This is Laravel Blank Page TailAdmin Dashboard Template',
+    ],
+    '/buttons' => [
+        'title' => 'Laravel Buttons | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Buttons page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/calendar' => [
+        'title' => 'Laravel Calender | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Calender page for TailAdmin Tailwind CSS Admin Dashboard Template',
+    ],
+    '/ecommerce' => [
+        'title' => 'Laravel E-commerce Dashboard | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Home for TailAdmin Dashboard Template',
+    ],
+    '/error-404' => [
+        'title' => 'Laravel Error 404 Page | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Error 404 page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/form-elements' => [
+        'title' => 'Laravel Form Elements | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Form Elements page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/images' => [
+        'title' => 'Laravel Images | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Images page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/line-chart' => [
+        'title' => 'Laravel Line Chart | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Line Chart page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+    '/profile' => [
+        'title' => 'Profile | TailAdmin - Laravel Admin Dashboard Template',
+        'description' => 'Manage your personal information, security settings, and preference on the TailAdmin Profile page.',
+    ],
+    '/videos' => [
+        'title' => 'Laravel Videos | TailAdmin - Laravel Dashboard Template',
+        'description' => 'This is Laravel Videos page for TailAdmin - Laravel Tailwind CSS Admin Dashboard Template',
+    ],
+];
