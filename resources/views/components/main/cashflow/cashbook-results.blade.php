@@ -2,7 +2,8 @@
 
 @php
     $rows = $cashbook['rows'];
-    $context = ['section' => 'transactions', 'bulan' => $period->month, 'dompet' => $walletId];
+    $context = ['section' => 'transactions', 'bulan' => $period->month, 'dompet' => $walletId, 'q' => $cashbook['search'] !== '' ? $cashbook['search'] : null];
+    $emptyMessage = $cashbook['search'] === '' ? __('Belum ada transaksi pada periode ini.') : __('Tidak ada transaksi yang cocok.');
     $cell = 'px-4 py-3';
     $carry = $rows->onFirstPage() ? $cashbook['opening'] : $cashbook['carry'];
     $carryLabel = $rows->onFirstPage() ? __('Saldo bulan lalu') : __('Saldo dari halaman sebelumnya');
@@ -64,7 +65,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr role="row"><td role="cell" colspan="7" class="px-3 py-4">{{ __('Belum ada transaksi pada periode ini.') }}</td></tr>
+                        <tr role="row"><td role="cell" colspan="7" class="px-3 py-4">{{ $emptyMessage }}</td></tr>
                     @endforelse
                 </tbody>
                 <tfoot role="rowgroup">
@@ -78,5 +79,30 @@
         </div>
     </div>
     @include('components.main.cashflow.cashbook-cards')
-    <x-main.cashflow.pagination :paginator="$rows" label="Halaman transaksi" />
+    <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+            @if ($cashbook['search'] !== '')
+                {{ __(':total transaksi ditemukan', ['total' => $cashbook['matchingTransactions']]) }}
+                @if ($rows->hasPages())
+                    · {{ __('Halaman :current dari :last', ['current' => $rows->currentPage(), 'last' => $rows->lastPage()]) }}
+                @endif
+            @elseif ($cashbook['firstTransaction'] !== null)
+                {{ __('Menampilkan :first–:last dari :total transaksi', ['first' => $cashbook['firstTransaction'], 'last' => $cashbook['lastTransaction'], 'total' => $cashbook['matchingTransactions']]) }}
+            @else
+                {{ __(':total transaksi', ['total' => $cashbook['matchingTransactions']]) }}
+            @endif
+        </p>
+        <x-main.cashflow.pagination :paginator="$rows" label="Halaman transaksi" numbered />
+    </div>
+    <div class="mt-4 rounded-xl border border-gray-200 p-4 dark:border-gray-800">
+        <h3 class="mb-3 text-sm font-semibold">{{ __('Total bulanan') }}</h3>
+        <dl class="grid grid-cols-2 gap-3">
+            @foreach (['monthlyIn' => 'Total masuk', 'monthlyOut' => 'Total keluar'] as $key => $label)
+                <div class="min-w-0">
+                    <dt class="text-xs text-gray-600 dark:text-gray-400">{{ __($label) }}</dt>
+                    <dd class="mt-1 font-semibold tabular-nums [overflow-wrap:anywhere]">{{ Ledger::rupiah($cashbook[$key]) }}</dd>
+                </div>
+            @endforeach
+        </dl>
+    </div>
 </div>

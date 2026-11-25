@@ -52,7 +52,7 @@
                 </div>
             </li>
         @empty
-            <li class="rounded-xl border border-gray-200 p-4 text-sm dark:border-gray-800 md:col-span-2">{{ __('Belum ada transaksi pada periode ini.') }}</li>
+            <li class="rounded-xl border border-gray-200 p-4 text-sm dark:border-gray-800 md:col-span-2">{{ $emptyMessage }}</li>
         @endforelse
     </ul>
     <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-gray-50 p-4 text-sm font-semibold dark:bg-gray-800">

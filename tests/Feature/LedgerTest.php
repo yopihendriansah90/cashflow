@@ -227,13 +227,26 @@ test('cashbook carries balances across years and pages and reflects historical c
     $this->get(route('ledger.index', $book))->assertOk()
         ->assertSeeInOrder(['>No.</th>', '>Tanggal</th>', '>Keterangan</th>', '>Masuk</th>', '>Keluar</th>', '>Saldo</th>', '>Aksi</th>'], false)
         ->assertSeeInOrder(['Saldo bulan lalu', 'Rp150', 'Saldo awal dompet', 'Mutasi 1.', 'Mutasi 24.'])
+        ->assertSee('Menampilkan 1–24 dari 25 transaksi')
+        ->assertSee('aria-label="Halaman 2"', false)
         ->assertViewHas('cashbook', fn ($cashbook) => $cashbook['rows']->first()['number'] === null
-            && $cashbook['rows']->last()['number'] === 24);
+            && $cashbook['rows']->last()['number'] === 24
+            && $cashbook['monthlyIn'] === '250' && $cashbook['monthlyOut'] === '0');
     $this->get(route('ledger.index', $book + ['page' => 2]))->assertOk()
         ->assertViewHas('cashbook', fn ($cashbook) => $cashbook['rows']->first()['number'] === 25)
-        ->assertSeeInOrder(['Saldo dari halaman sebelumnya', 'Rp790', 'Mutasi 25.', 'Saldo akhir bulan', 'Rp800']);
+        ->assertSeeInOrder(['Saldo dari halaman sebelumnya', 'Rp790', 'Mutasi 25.', 'Saldo akhir bulan', 'Rp800'])
+        ->assertSee('Menampilkan 25–25 dari 25 transaksi');
     $this->get(route('ledger.index', $book + ['page' => 2]), ['X-Cashbook-Results' => '1'])->assertOk()
         ->assertSeeInOrder(['Saldo dari halaman sebelumnya', 'Rp790', 'Mutasi 25.', 'Saldo akhir bulan', 'Rp800']);
+    $this->get(route('ledger.index', $book + ['q' => '  MUTASI 25.  ']), ['X-Cashbook-Results' => '1'])->assertOk()
+        ->assertSee('Mutasi 25.')->assertDontSee('Mutasi 24.')->assertDontSee('Saldo awal dompet')->assertSee('Rp800')
+        ->assertSee('1 transaksi ditemukan')
+        ->assertViewHas('cashbook', fn ($cashbook) => $cashbook['rows']->total() === 1
+            && $cashbook['rows']->first()['balance'] === '800' && $cashbook['monthlyIn'] === '250');
+    $this->get(route('ledger.index', $book + ['q' => 'kas']))->assertOk()
+        ->assertViewHas('cashbook', fn ($cashbook) => $cashbook['rows']->total() === 25);
+    $this->get(route('ledger.index', $book + ['q' => 'mutasi', 'dompet' => $bank]))->assertOk()
+        ->assertSee('Tidak ada transaksi yang cocok.')->assertSee('Rp400');
     $this->delete(route('ledger.remove', ['wallets', $bank]))->assertRedirect();
     $this->get(route('ledger.index', $book + ['dompet' => $bank]))->assertOk()->assertSee('Diarsipkan')->assertSee('Rp400');
 

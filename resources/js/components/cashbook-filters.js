@@ -2,6 +2,7 @@ import { showError } from "../notifications";
 
 export default function cashbookFilters() {
     let pending;
+    let searchTimer;
     let applied;
     let desktop;
     let onViewportChange;
@@ -24,6 +25,7 @@ export default function cashbookFilters() {
         },
 
         destroy() {
+            clearTimeout(searchTimer);
             pending?.abort();
             desktop?.removeEventListener("change", onViewportChange);
         },
@@ -62,6 +64,8 @@ export default function cashbookFilters() {
         },
 
         filter() {
+            clearTimeout(searchTimer);
+            searchTimer = undefined;
             const form = this.$refs.filters;
             if (!form.elements.namedItem("bulan").validity.valid) return;
 
@@ -70,25 +74,35 @@ export default function cashbookFilters() {
             this.load(url);
         },
 
+        search() {
+            clearTimeout(searchTimer);
+            pending?.abort();
+            searchTimer = setTimeout(() => this.filter(), 350);
+        },
+
         paginate(event) {
-            const link = event.target.closest("a[rel='prev'], a[rel='next']");
+            const link = event.target.closest("[data-cashbook-pagination] a");
             if (!link || event.defaultPrevented || event.button !== 0 ||
                 event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
 
             event.preventDefault();
+            if (searchTimer !== undefined) {
+                this.filter();
+                return;
+            }
             this.load(new URL(link.href), true);
         },
 
         setFilters(url, values) {
-            for (const key of ["bulan", "dompet"]) {
-                const value = values.get(key);
+            for (const key of ["bulan", "dompet", "q"]) {
+                const value = values.get(key)?.trim();
                 if (value) url.searchParams.set(key, value);
                 else url.searchParams.delete(key);
             }
         },
 
-        restoreFilters() {
-            for (const key of ["bulan", "dompet"]) {
+        restoreFilters(keys = ["bulan", "dompet", "q"]) {
+            for (const key of keys) {
                 this.$refs.filters.elements.namedItem(key).value = applied.get(key) ?? "";
             }
         },
@@ -131,7 +145,7 @@ export default function cashbookFilters() {
                 this.status = "";
             } catch {
                 if (!controller.signal.aborted) {
-                    this.restoreFilters();
+                    this.restoreFilters(["bulan", "dompet"]);
                     this.status = "";
                     showError(this.$el.dataset.error);
                 }

@@ -5,7 +5,7 @@
         use App\Support\Ledger;
         $heading = ['wallets' => 'Dompet', 'categories' => 'Kategori', 'transactions' => 'Transaksi'][$section];
         $action = ['wallets' => 'Tambah dompet', 'categories' => 'Tambah kategori', 'transactions' => 'Catat transaksi'][$section];
-        $context = $period ? ['bulan' => $period->month, 'dompet' => $walletId] : [];
+        $context = $period ? ['bulan' => $period->month, 'dompet' => $walletId, 'q' => $cashbook['search'] !== '' ? $cashbook['search'] : null] : [];
         $formAction = route('ledger.save', ['section' => $section, 'record' => $selected?->id] + $context);
         $correction = old('_dialog') === 'correction';
         $walletNames = $wallets->pluck('name', 'id');

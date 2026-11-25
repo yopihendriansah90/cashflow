@@ -24,7 +24,10 @@ class LedgerController extends Controller
         if ($section === 'transactions') {
             $period = MonthlyLedger::fromRequest($request, $selected ? substr($selected->occurred_on, 0, 7) : null);
             $walletId = $this->cashbookWallet($request, $member);
-            $cashbook = Cashbook::read($member, $period, $walletId);
+            $cashbook = Cashbook::read(
+                $member, $period, $walletId, $this->cashbookSearch($request) ?? '',
+                $wallets->pluck('name', 'id')->all(), $categories->pluck('name', 'id')->all(),
+            );
             if ($cashbook['rows']->currentPage() > $cashbook['rows']->lastPage()) {
                 return redirect()->to($cashbook['rows']->url($cashbook['rows']->lastPage()));
             }
@@ -112,6 +115,7 @@ class LedgerController extends Controller
         $context = ['section' => $section];
         if ($section === 'transactions') {
             $context['bulan'] = substr($data['occurred_on'], 0, 7);
+            $context['q'] = $this->cashbookSearch($request);
             if ($walletId !== null && in_array($walletId, [(string) $data['source_wallet_id'], (string) $data['destination_wallet_id']], true)) {
                 $context['dompet'] = $walletId;
             }
@@ -151,6 +155,7 @@ class LedgerController extends Controller
         if ($section === 'transactions') {
             $context['bulan'] = MonthlyLedger::fromRequest($request)->month;
             $context['dompet'] = $this->cashbookWallet($request, $member);
+            $context['q'] = $this->cashbookSearch($request);
         }
         Ledger::write($member, function () use ($section, $record, $member) {
             $before = $this->row($section, $member, $record);
@@ -166,6 +171,15 @@ class LedgerController extends Controller
         });
 
         return redirect()->route('ledger.index', $context)->with('status', __('Perubahan disimpan.'));
+    }
+
+    private function cashbookSearch(Request $request): ?string
+    {
+        $value = $request->query('q');
+
+        $search = is_string($value) ? mb_substr(trim($value), 0, 120) : '';
+
+        return $search === '' ? null : $search;
     }
 
     private function cashbookWallet(Request $request, HouseholdMembership $member): ?string
